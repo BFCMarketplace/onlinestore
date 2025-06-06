@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BFC Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3523/3523887.png" />
+  <style>
+    :root {
+      --primary: #0052cc;
+      --primary-light: #2e7cf6;
+      --accent: #ff9800;
+      --bg: #f4f7fb;
+      --surface: #fff;
+      --shadow: 0 4px 24px 0 #0052cc18;
+      --radius: 18px;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: #263238;
+    }
+    header {
+      background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
+      color: white;
+      text-align: center;
+      padding: 2.5em 1em 2em 1em;
+      box-shadow: 0 2px 16px #00336a22;
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+    header h1 {
+      font-weight: 800;
+      font-size: 2.6em;
+      margin-bottom: 0.2em;
+      letter-spacing: -1px;
+    }
+    header p {
+      font-size: 1.2em;
+      opacity: 0.93;
+      font-weight: 400;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      box-shadow: 0 1px 6px #00336a11;
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      padding: 1em 0.5em;
+      z-index: 50;
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.06em;
+      position: relative;
+      padding: 0.3em 0.7em;
+      transition: color .17s;
+    }
+    nav a::after {
+      content: '';
+      display: block;
+      height: 3px;
+      border-radius: 2px;
+      width: 0;
+      margin: 0 auto;
+      background: var(--accent);
+      transition: width 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    nav a:hover::after {
+      width: 60%;
+    }
+    .hero {
+      background: linear-gradient(100deg, #e3ecfa 0%, #f6f8fd 100%);
+      border-radius: var(--radius);
+      margin: 2.5em auto 2em;
+      padding: 3.5em 1.3em 2.5em 1.3em;
+      max-width: 900px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .hero h2 {
+      font-size: 2em;
+      font-weight: 700;
+      margin-bottom: 0.5em;
+    }
+    .hero p {
+      font-size: 1.15em;
+      margin-bottom: 2em;
+      color: #3b4b5a;
+    }
+    .cta-button {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.2em;
+      padding: 0.85em 2.7em;
+      border: none;
+      border-radius: 32px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 24px #ff980040;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.18s, transform 0.13s;
+    }
+    .cta-button:hover {
+      background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
+      transform: scale(1.055);
+    }
+    .section {
+      padding: 3em 1em 2em 1em;
+      max-width: 1100px;
+      margin: 2em auto;
+    }
+    .section h3 {
+      font-size: 1.5em;
+      font-weight: 700;
+      margin-bottom: 1.4em;
+      text-align: center;
+      color: var(--primary);
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2em;
+    }
+    .product {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2em 1.3em 1.2em 1.3em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.18s, transform 0.17s;
+      position: relative;
+      min-height: 320px;
+    }
+    .product:hover {
+      box-shadow: 0 10px 38px #0052cc38;
+      transform: translateY(-4px) scale(1.034);
+    }
+    .product img, .product .bottle-svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1em;
+      border-radius: 12px;
+      background: #f4f4f4;
+      box-shadow: 0 2px 10px #0001;
+      display: block;
+    }
+    .product h4 {
+      font-size: 1.15em;
+      font-weight: 700;
+      margin: 0.7em 0 0.4em 0;
+      color: var(--primary);
+    }
+    .product p {
+      color: #48536a;
+      font-size: 1em;
+      margin-bottom: 0.5em;
+      opacity: 0.93;
+      text-align: center;
+    }
+    .about {
+      background: linear-gradient(90deg, #e4f2ff 0%, #e3ecfa 100%);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px #0052cc08;
+      padding: 2.3em 1.5em 2em 1.5em;
+      margin-top: 2em;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .about h3 {
+      margin-bottom: 0.7em;
+    }
+    .about p {
+      color: #30547a;
+      font-size: 1.13em;
+      font-weight: 500;
+    }
+    footer {
+      background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
+      color: #fff;
+      text-align: center;
+      padding: 2em 1em 1.4em 1em;
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+      margin-top: 2em;
+      font-size: 1em;
+      position: relative;
+    }
+    .socials {
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+    .socials a {
+      display: inline-block;
+      margin: 0 0.4em;
+      color: inherit;
+      vertical-align: middle;
+      transition: transform 0.16s;
+      opacity: 0.95;
+    }
+    .socials a:hover {
+      transform: scale(1.2) rotate(-9deg);
+      opacity: 1;
+      color: var(--accent);
+    }
+    .socials svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+      vertical-align: middle;
+    }
+    .socials a[title="E-mail"] svg {
+      fill: var(--accent);
+    }
+    @media (max-width: 800px) {
+      .section, .about {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+      .hero {
+        padding: 2.4em 0.6em 2.1em 0.6em;
+      }
+    }
+    @media (max-width: 600px) {
+      nav { gap: 1em; font-size: 0.95em; }
+      .section { padding: 1.5em 0.1em 1em 0.1em; }
+      .products { gap: 1em; }
+      .product { min-height: 240px; padding: 1.5em 0.6em; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BFC Marketplace</h1>
+    <p>Produits utiles, livraison rapide, confiance garantie.</p>
+  </header>
+
+  <nav>
+    <a href="#">Beauté</a>
+    <a href="#">Soin personnel</a>
+    <a href="#">Maison</a>
+    <a href="#">Bébés</a>
+    <a href="#about">À propos</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section class="hero">
+    <h2>Bienvenue chez BFC Marketplace</h2>
+    <p>Une sélection soignée de produits du quotidien, livrés avec sérieux.</p>
+    <a href="#vedette"><button class="cta-button">Découvrir nos produits</button></a>
+  </section>
+
+  <section class="section" id="vedette">
+    <h3>Produits en vedette</h3>
+    <div class="products">
+      <div class="product">
+        <span class="bottle-svg">
+          <!-- SVG specific pentru produs de bebeluși (biberon/lapte/lotiune) -->
+          <svg viewBox="0 0 64 64" fill="none">
+            <rect x="22" y="10" width="20" height="40" rx="10" fill="#FFE0B2" stroke="#FFA726" stroke-width="2"/>
+            <rect x="27" y="7" width="10" height="10" rx="5" fill="#FFF3E0" stroke="#FFA726" stroke-width="2"/>
+            <rect x="24" y="46" width="16" height="8" rx="4" fill="#B3E5FC" stroke="#0288D1" stroke-width="2"/>
+            <rect x="29" y="12" width="6" height="25" rx="3" fill="#FFF" opacity="0.8"/>
+          </svg>
+        </span>
+        <h4>Lotion bébé douce</h4>
+        <p>Parfaite pour la peau sensible.</p>
+      </div>
+      <div class="product">
+        <img src="https://cdn-icons-png.flaticon.com/512/6394/6394949.png" alt="Crème hydratante visage" />
+        <h4>Crème hydratante visage</h4>
+        <p>Hydratation naturelle pour tous les types de peau.</p>
+      </div>
+      <div class="product">
+        <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="Brosse de bain exfoliante" />
+        <h4>Brosse de bain exfoliante</h4>
+        <p>Un moment spa à la maison.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- START MODIFICARE: Secțiune 'À propos de nous' scurtă și de impact -->
+  <section class="about section" id="about">
+    <h3>À propos de nous</h3>
+    <p>
+      Chez BFC Marketplace, nous simplifions votre quotidien.<br>
+      Sélection soignée, rapidité, confiance.<br>
+      <b>Pour vous. Chaque jour.</b>
+    </p>
+  </section>
+  <!-- END MODIFICARE -->
+
+  <footer>
+    <div class="socials">
+      <a href="https://facebook.com" target="_blank" title="Facebook" rel="noopener">
+        <svg viewBox="0 0 32 32"><path d="M29 0H3C1.3 0 0 1.3 0 3v26c0 1.7 1.3 3 3 3h13V20h-4v-5h4v-4c0-4.1 2.5-6.3 6.1-6.3c1.7 0 3.4 0.1 3.9 0.2v4.5h-2.7C21.2 9.4 21 10.2 21 11.2V15h5l-1 5h-4v12h7c1.7 0 3-1.3 3-3V3C32 1.3 30.7 0 29 0z"/></svg>
+      </a>
+      <a href="https://instagram.com" target="_blank" title="Instagram" rel="noopener">
+        <svg viewBox="0 0 32 32"><path d="M16 7.9A8.1 8.1 0 1 0 24.1 16A8.1 8.1 0 0 0 16 7.9zm0 13.3A5.2 5.2 0 1 1 21.2 16A5.21 5.21 0 0 1 16 21.2zm8.4-13.5a1.9 1.9 0 1 1-1.9-1.9A1.89 1.89 0 0 1 24.4 7.7zm5.4 1.9c-0.1-2.2-0.6-4.1-2.2-5.7C25.8 2.6 23.9 2.1 21.7 2c-2.2-0.1-8.8-0.1-11 0C7.1 2.1 5.2 2.6 3.6 4.2C2 5.8 1.5 7.7 1.4 9.9c-0.1 2.2-0.1 8.8 0 11c0.1 2.2 0.6 4.1 2.2 5.7C6.2 29.4 8.1 29.9 10.3 30c2.2 0.1 8.8 0.1 11 0c2.2-0.1 4.1-0.6 5.7-2.2c1.6-1.6 2.1-3.5 2.2-5.7c0.1-2.2 0.1-8.8 0-11zM28.1 25.1c-0.3 0.8-1 1.5-1.8 1.8C24.5 27.2 21.6 27.1 16 27.1s-8.5 0.1-10.3-0.2c-0.8-0.3-1.5-1-1.8-1.8c-0.3-1.8-0.2-4.7-0.2-10.3s-0.1-8.5 0.2-10.3c0.3-0.8 1-1.5 1.8-1.8C7.5 4.8 10.4 4.9 16 4.9s8.5-0.1 10.3 0.2c0.8 0.3 1.5 1 1.8 1.8c0.3 1.8 0.2 4.7 0.2 10.3s0.1 8.5-0.2 10.3z"/></svg>
+      </a>
+      <a href="mailto:contact@bfcmarketplace.fr" title="E-mail">
+        <svg viewBox="0 0 32 32"><path d="M27 4H5C3.3 4 2 5.3 2 7v18c0 1.7 1.3 3 3 3h22c1.7 0 3-1.3 3-3V7c0-1.7-1.3-3-3-3zm0 3l-11 7.3L5 7V7zm0 18H5V9.1l11 7.3l11-7.3V25z"/></svg>
+      </a>
+    </div>
+    <div id="contact">
+      <p>Contact : <a href="mailto:contact@bfcmarketplace.fr" style="color:#ffd479;">contact@bfcmarketplace.fr</a></p>
+    </div>
+    <p style="margin-top:1.2em; font-size:0.97em;">&copy; 2025 BFC Marketplace - Tous droits réservés</p>
+  </footer>
+</body>
+</html>
