@@ -235,6 +235,23 @@
     .socials a[title="E-mail"] svg {
       fill: var(--accent);
     }
+    .buy-button {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.7em 2em;
+      background: linear-gradient(90deg, #0052cc 0%, #ff9800 100%);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 1em;
+      transition: background 0.18s, transform 0.13s;
+      box-shadow: 0 2px 12px #0052cc22;
+    }
+    .buy-button:hover {
+      background: linear-gradient(90deg, #ff9800 0%, #0052cc 100%);
+      transform: scale(1.05);
+    }
     @media (max-width: 800px) {
       .section, .about {
         padding-left: 0.5em;
@@ -283,6 +300,7 @@
         <div class="product-price">
           <strong>Prix : 25,99 €</strong>
         </div>
+        <a href="#" class="buy-button" onclick="showOrderForm(event, 'Vichy Dercos Shampooing anti-pelliculaire cuir chevelu sec, 390 ml')">Cumpără</a>
       </div>
       <div class="product">
         <img src="https://i.imgur.com/n7TbFMU.jpg" alt="Dexeryl Crème Émolliente 500g" />
@@ -291,6 +309,7 @@
         <div class="product-price">
           <strong>Prix : 23,99 €</strong>
         </div>
+        <a href="#" class="buy-button" onclick="showOrderForm(event, 'Dexeryl Crème Émolliente 500g')">Cumpără</a>
       </div>
     </div>
   </section>
@@ -305,6 +324,45 @@
     </p>
   </section>
   <!-- END MODIFICARE -->
+
+  <!-- START ADĂUGARE: Formular de comandă rapidă -->
+  <form id="order-form" action="https://formspree.io/f/xovwjgdp" method="POST" style="display:none;max-width:400px;margin:2em auto;background:#fff;padding:2em;border-radius:16px;box-shadow:0 2px 12px #0052cc18;">
+    <h4>Commande rapide</h4>
+    <label>Prénom :<br>
+      <input type="text" name="prenume" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Nom :<br>
+      <input type="text" name="nume" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Adresse :<br>
+      <input type="text" name="adresa" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Ville :<br>
+      <input type="text" name="oras" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Code postal :<br>
+      <input type="text" name="cod_postal" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Pays :<br>
+      <input type="text" name="tara" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Email :<br>
+      <input type="email" name="email" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Produit souhaité :<br>
+      <input type="text" name="produs" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Quantité :<br>
+      <input type="number" name="quantite" min="1" value="1" required style="width:100%;padding:0.5em;margin-bottom:1em;">
+    </label>
+    <label>Message (optionnel) :<br>
+      <textarea name="mesaj" rows="3" style="width:100%;padding:0.5em;margin-bottom:1em;"></textarea>
+    </label>
+    <button type="submit" class="buy-button">Envoyer la commande</button>
+  </form>
+  <!-- END ADĂUGARE -->
+
+  
 
   <footer>
     <div class="socials">
@@ -323,5 +381,18 @@
     </div>
     <p style="margin-top:1.2em; font-size:0.97em;">&copy; 2025 BFC Marketplace - Tous droits réservés</p>
   </footer>
+
+  <script>
+function showOrderForm(event, produs) {
+  event.preventDefault();
+  var form = document.getElementById('order-form');
+  form.style.display = 'block';
+  // Completează automat produsul dacă vrei
+  var produsInput = form.querySelector('input[name="produs"]');
+  if (produsInput && produs) produsInput.value = produs;
+  // Scroll la formular
+  form.scrollIntoView({behavior: "smooth"});
+}
+</script>
 </body>
 </html>
